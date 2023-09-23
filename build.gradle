@@ -186,18 +186,15 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
-
-def gitCreds = {
-    username = property('gpr.username')
-    password = property('gpr.token')
-}
-
 publishing {
     repositories {
         maven {
             name = "GitHubPackages"
             url = "https://maven.pkg.github.com/khanhpham05/typolibrary"
-            credentials gitCreds
+            credentials {
+                username = System.getProperty("USERNAME")
+                password = System.getProperty("TOKEN")
+            }
         }
     }
 }
