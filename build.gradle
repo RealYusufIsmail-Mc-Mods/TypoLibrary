@@ -125,15 +125,10 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
 java {
     withSourcesJar()
-    withJavadocJar()
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
         vendor.set(JvmVendorSpec.ADOPTIUM)
@@ -190,10 +185,16 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/khanhpham05/typolibrary"
+            url = "https://maven.pkg.github.com/KhanhPham05/TypoLibrary"
             credentials {
-                username = System.getProperty("USERNAME")
-                password = System.getProperty("TOKEN")
+                username = property('username')
+                password = property('credKey')
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                artifactId = 'typolibrary'
+                from components.java
             }
         }
     }
