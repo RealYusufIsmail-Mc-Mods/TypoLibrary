@@ -2,13 +2,10 @@ package com.khanhtypo.typolib.registration.common.block;
 
 import com.khanhtypo.typolib.registration.common.IItemStackLike;
 import com.khanhtypo.typolib.registration.common.ObjectSupplier;
-import com.khanhtypo.typolib.registration.common.itemtab.ItemGroup;
-import net.minecraft.core.registries.Registries;
+import com.khanhtypo.typolib.registration.common.itemtab.TypoItemGroup;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegisterEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,7 +19,7 @@ public class BlockObject<T extends Block> extends ObjectSupplier<Block, T> imple
     @Nullable
     Function<Item.Properties, ? extends BlockItem> customItemConstructor;
     @Nullable
-    ItemGroup itemGroup;
+    TypoItemGroup itemGroup;
 
     BlockObject(BlockRegister blockRegister, String name, Supplier<T> supplier) {
         super(blockRegister, name, supplier);
@@ -39,7 +36,7 @@ public class BlockObject<T extends Block> extends ObjectSupplier<Block, T> imple
         return this;
     }
 
-    public BlockObject<T> setItemGroup(@Nonnull ItemGroup itemGroup) {
+    public BlockObject<T> setItemGroup(@Nonnull TypoItemGroup itemGroup) {
         this.itemGroup = itemGroup;
         return this;
     }

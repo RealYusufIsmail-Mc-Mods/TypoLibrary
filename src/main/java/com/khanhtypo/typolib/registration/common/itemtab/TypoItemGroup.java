@@ -1,5 +1,6 @@
 package com.khanhtypo.typolib.registration.common.itemtab;
 
+import com.khanhtypo.typolib.TypoLibrary;
 import com.khanhtypo.typolib.utils.VanillaRegistryHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -15,16 +16,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-public class ItemGroup {
-    public final String defaultTranslatedName;
+public final class TypoItemGroup implements Supplier<CreativeModeTab> {
     public final ResourceLocation groupId;
     public final Component groupTitle;
     private final Supplier<? extends ItemLike> icon;
     private final Set<Supplier<ItemStack>> items;
     private boolean locked;
 
-    private ItemGroup(String defaultTranslatedName, ResourceLocation groupId, Supplier<? extends ItemLike> icon, Set<Supplier<ItemStack>> items) {
-        this.defaultTranslatedName = defaultTranslatedName;
+    private TypoItemGroup(ResourceLocation groupId, Supplier<? extends ItemLike> icon, Set<Supplier<ItemStack>> items) {
         this.groupId = groupId;
         this.icon = icon;
         this.items = items;
@@ -34,6 +33,10 @@ public class ItemGroup {
     }
 
     public void acceptItem(Supplier<? extends ItemLike> itemObject) {
+        if (this.locked) {
+            TypoLibrary.LOGGER.warn(String.format("Can not add item (%s) to tab (%s), the tab has locked.", VanillaRegistryHelper.getNameFromObject(Registries.ITEM, itemObject.get().asItem()), this.groupId));
+            return;
+        }
         this.items.add(() -> itemObject.get().asItem().getDefaultInstance());
     }
 
@@ -48,7 +51,12 @@ public class ItemGroup {
         });
     }
 
-    public static ItemGroup create(String defaultTranslatedName, String modId, String tabId, Supplier<Supplier<? extends ItemLike>> itemLikeObject) {
-        return new ItemGroup(defaultTranslatedName, new ResourceLocation(modId, tabId), itemLikeObject.get(), new TreeSet<>(Comparator.comparing(itemStackSupplier -> VanillaRegistryHelper.getNameFromObject(Registries.ITEM, itemStackSupplier.get().getItem()))));
+    public static TypoItemGroup create(String modId, String tabId, Supplier<Supplier<? extends ItemLike>> itemLikeObject) {
+        return new TypoItemGroup(new ResourceLocation(modId, tabId), itemLikeObject.get(), new TreeSet<>(Comparator.comparing(itemStackSupplier -> VanillaRegistryHelper.getNameFromObject(Registries.ITEM, itemStackSupplier.get().getItem()))));
+    }
+
+    @Override
+    public CreativeModeTab get() {
+        return VanillaRegistryHelper.getObjectFromName(Registries.CREATIVE_MODE_TAB, this.groupId);
     }
 }

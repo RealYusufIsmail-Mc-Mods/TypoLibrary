@@ -1,7 +1,7 @@
 package com.khanhtypo.typolib.registration.common.item;
 
 import com.khanhtypo.typolib.registration.common.DeferredRegisterWrapper;
-import com.khanhtypo.typolib.registration.common.itemtab.ItemGroup;
+import com.khanhtypo.typolib.registration.common.itemtab.TypoItemGroup;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -17,11 +17,11 @@ public class ItemRegister extends DeferredRegisterWrapper<Item> {
         this.allItemObjects = super.createSet();
     }
 
-    public SimpleItemObject registerSimple(String name, Item.Properties itemProperties, @Nullable ItemGroup itemGroup) {
+    public SimpleItemObject registerSimple(String name, Item.Properties itemProperties, @Nullable TypoItemGroup itemGroup) {
         return new SimpleItemObject(this, name, itemProperties, itemGroup);
     }
 
-    public <T extends Item> ItemObject<T> register(String name, Item.Properties itemProperties, Function<Item.Properties, T> itemConstructor, @Nullable ItemGroup itemGroup) {
+    public <T extends Item> ItemObject<T> register(String name, Item.Properties itemProperties, Function<Item.Properties, T> itemConstructor, @Nullable TypoItemGroup itemGroup) {
         return new ItemObject<>(this, name, () -> itemConstructor.apply(itemProperties), itemGroup);
     }
 
