@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("typolib")
+@Mod(TypoLibrary.MODID)
 public class TypoLibrary {
     public static final Logger LOGGER = LogManager.getLogger("TypoLibrary");
     public static final String MODID = "typolib";
@@ -14,5 +14,11 @@ public class TypoLibrary {
 
     public TypoLibrary() {
         FORGE_EVENT_BUS.register(this);
+        var testLogger = createLogger("typoLibTest");
+        testLogger.info("TYPOLIB Loaded");
+    }
+
+    public static Logger createLogger(String modName) {
+        return LogManager.getLogger("TypoLibrary/" + modName);
     }
 }

@@ -1,5 +1,6 @@
 package com.khanhtypo.typolib.data;
 
+import com.khanhtypo.typolib.registration.common.ObjectSupplier;
 import com.khanhtypo.typolib.utils.TextUtils;
 import com.khanhtypo.typolib.utils.VanillaRegistryHelper;
 import net.minecraft.core.registries.Registries;
@@ -23,6 +24,14 @@ public abstract class TypoLanguageProvider extends LanguageProvider {
                 VanillaRegistryHelper.getNameFromObject(Registries.CREATIVE_MODE_TAB, tab.get()).toLanguageKey("itemGroup"),
                 name
         );
+    }
+
+    protected final void add(ObjectSupplier<?, ?> objectSupplier) {
+        add(objectSupplier, TextUtils.transferIdPathToName(objectSupplier.getId()));
+    }
+
+    protected final void add(ObjectSupplier<?, ?> objectSupplier, String name) {
+        super.add(objectSupplier.getId().toLanguageKey(objectSupplier.getRegistry().location().getPath()), name);
     }
 
     protected final void addBiome(ResourceKey<Biome> biomeResourceKey) {
